@@ -1,0 +1,50 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:background="@drawable/backgound_game"
+    android:orientation="vertical"
+    tools:context="com.tmc.concentrationgame.fragments.SinglePlayerFragment">
+
+    <LinearLayout
+        android:id="@+id/linear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/firstPlayerScore"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="@dimen/unit_8"
+            android:layout_weight="1"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="@dimen/unit_16_text"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/secondPlayerScore"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="@dimen/unit_8"
+            android:layout_weight="1"
+            android:textColor="@color/black"
+            android:textSize="@dimen/unit_16_text"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <GridLayout
+        android:id="@+id/mygrid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/unit_64"
+        android:background="@android:color/transparent"
+        android:orientation="horizontal"
+        android:padding="@dimen/unit_2" />
+
+
+</LinearLayout>
