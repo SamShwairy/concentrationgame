@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#da917f</color>
+    <color name="colorPrimaryDark">#24dacf</color>
+    <color name="colorAccent">#000</color>
+    <color name="lightPrimaryColor">#000</color>
+    <color name="text_icons">#000</color>
+    <color name="primaryText">#212121</color>
+    <color name="secondaryText">#757575</color>
+    <color name="dividerColor">#BDBDBD</color>
+
+    <!-- Material Colors -->
+
+    <color name="red">#ddF44336</color>
+    <color name="red_pressed">#aaF44336</color>
+    <color name="pink">#E91E63</color>
+    <color name="purple">#dd9C27B0</color>
+    <color name="purple_pressed">#aa9C27B0</color>
+    <color name="deep_purple">#673AB7</color>
+    <color name="indigo">#3F51B5</color>
+    <color name="blue">#dd2196F3</color>
+    <color name="blue_pressed">#aa2196F3</color>
+    <color name="light_blue">#03A9F4</color>
+    <color name="cyan">#00BCD4</color>
+    <color name="teal">#009688</color>
+    <color name="green">#dd4CAF50</color>
+    <color name="green_pressed">#aa4CAF50</color>
+    <color name="light_green">#8BC34A</color>
+    <color name="lime">#CDDC39</color>
+    <color name="yellow">#FFEB3B</color>
+    <color name="amber">#ddFFC107</color>
+    <color name="amber_pressed">#aaFFC107</color>
+    <color name="orange">#ddFF9800</color>
+    <color name="orange_pressed">#aaFF9800</color>
+    <color name="deep_orange">#FF5722</color>
+    <color name="brown">#795548</color>
+    <color name="grey">#9E9E9E</color>
+    <color name="white_50">#80ffffff</color>
+    <color name="blue_grey">#607D8B</color>
+    <color name="dark_grey">#555555</color>
+    <color name="dark_grey_teacher">#e4e4e4</color>
+    <color name="light_gray">#eeeeee</color>
+    <color name="white">#FFFFFF</color>
+    <color name="white_70">#F2F2F2</color>
+    <color name="black">#000000</color>
+    <color name="backyellow">#ffffff</color>
+    <color name="dimmed">#70ffffff</color>
+
+</resources>
