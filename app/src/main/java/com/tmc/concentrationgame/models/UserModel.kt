@@ -4,12 +4,13 @@ import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
 import android.os.Parcel
 import android.os.Parcelable
+import com.tmc.concentrationgame.utilities.Parameters
 
 /**
  * Created by sammy on 2/17/2018.
  */
 
-@Entity(tableName = "users")
+@Entity(tableName = Parameters.DATABASE)
 class UserModel() : Parcelable {
     @PrimaryKey(autoGenerate = true)
     var id: Int? = null

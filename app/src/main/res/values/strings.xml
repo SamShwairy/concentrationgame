@@ -1,3 +1,19 @@
 <resources>
     <string name="app_name">concentrationgame</string>
+    <string name="single_player">Single Player</string>
+    <string name="multiplayer">Multiplayer</string>
+    <string name="highscores">High Scores</string>
+    <string name="exit">Exit</string>
+    <string name="are_you_sure_exit">Are you sure you would like to exit the game?</string>
+
+
+    <string name="difficulity_level">Difficulty Level</string>
+    <string name="easy">Easy</string>
+    <string name="medium">Medium</string>
+    <string name="hard">Hard</string>
+    <string name="highscore">High Score</string>
+    <string name="name">Name</string>
+    <string name="no">No</string>
+    <string name="rank">Rank</string>
+    <string name="yes">Yes</string>
 </resources>

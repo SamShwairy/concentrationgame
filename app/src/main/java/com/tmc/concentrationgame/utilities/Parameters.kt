@@ -4,8 +4,22 @@ package com.tmc.concentrationgame.utilities
  * Created by sammy on 2/17/2018.
  */
 interface Parameters {
+    enum class Levels {
+        EASY,
+        MEDIUM,
+        HARD
+    }
     companion object {
 
+        //Identifiers
+        val HOME_FRAGMENT = "HOME_FRAGMENT"
+        val SINGLE_OR_MULTIPLE = "SINGLE_OR_MULTIPLE"
+        val USERS = "USERS"
+        val HIGHSCORE_FRAGMENT = "HIGHSCORE_FRAGMENT"
+        val DIFFICULTY_SELECTION_FRAGMENT = "DIFFICULTY_SELECTION_FRAGMENT"
+
+        //Database
+        const val DATABASE = "DATABASE"
 
         //API
         const val CONTENT_TYPE = "content_type"
