@@ -1,0 +1,40 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/backgound_game"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    tools:context="com.tmc.concentrationgame.fragments.SinglePlayerFragment">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linear"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/score"
+            android:layout_margin="@dimen/unit_8"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:textSize="@dimen/unit_16_text"/>
+        <include layout="@layout/progress_bar_timer"
+            android:layout_width="wrap_content"
+            android:id="@+id/progressLayout"
+            android:layout_marginBottom="@dimen/unit_12"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+    <GridLayout
+        android:id="@+id/mygrid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/unit_32"
+        android:layout_gravity="center"
+        android:background="@android:color/transparent" />
+
+
+
+</LinearLayout>

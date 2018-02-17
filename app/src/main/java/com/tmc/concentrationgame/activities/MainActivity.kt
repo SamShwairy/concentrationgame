@@ -8,6 +8,7 @@ import com.tmc.concentrationgame.databases.AppDatabase
 import com.tmc.concentrationgame.fragments.DifficultyFragment
 import com.tmc.concentrationgame.fragments.HighscoreFragment
 import com.tmc.concentrationgame.fragments.HomeFragment
+import com.tmc.concentrationgame.fragments.SinglePlayerFragment
 import com.tmc.concentrationgame.interfaces.HighscoresInterface
 import com.tmc.concentrationgame.methods.GetHighscores
 import com.tmc.concentrationgame.models.UserModel
@@ -57,6 +58,15 @@ class MainActivity : AppCompatActivity(), HighscoresInterface {
                 .commitAllowingStateLoss()
     }
 
+    fun goToSingleOrMultiplayerGame(level: Parameters.Levels, isSinglePlayer: Boolean) {
+        if (isSinglePlayer)
+            supportFragmentManager.beginTransaction()
+                    .replace(R.id.content_layout, SinglePlayerFragment.newInstance(level), Parameters.SINGLE_PLAYER_FRAGMENT)
+                    .addToBackStack(Parameters.SINGLE_PLAYER_FRAGMENT)
+                    .commitAllowingStateLoss()
+        else
+        {}
+    }
 
     override fun onBackPressed() {
         if (supportFragmentManager.backStackEntryCount < 1) {

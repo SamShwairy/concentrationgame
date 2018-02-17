@@ -5,7 +5,10 @@
     <string name="highscores">High Scores</string>
     <string name="exit">Exit</string>
     <string name="are_you_sure_exit">Are you sure you would like to exit the game?</string>
-
+    <string name="score">Score: </string>
+    <string name="time_is_up">Time is Up! Would you like to play again? </string>
+    <string name="you_win">You win! Would you like to play again? </string>
+    <string name="enter_your_name">Game Over. Please enter your name</string>
 
     <string name="difficulity_level">Difficulty Level</string>
     <string name="easy">Easy</string>
