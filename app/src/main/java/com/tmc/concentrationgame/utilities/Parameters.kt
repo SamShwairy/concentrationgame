@@ -43,6 +43,9 @@ interface Parameters {
         val LEVEL_IDENTIFIER = "LEVEL_IDENTIFIER"
         val SINGLE_PLAYER_FRAGMENT = "SINGLE_PLAYER_FRAGMENT"
         val MULTI_PLAYER_FRAGMENT = "MULTI_PLAYER_FRAGMENT"
+        val DEFAULT_NUMBER = 16
+        val SAFE_NUMBER = 25
+        val PHOTOS = "PHOTOS"
 
         //Database
         const val DATABASE = "users"

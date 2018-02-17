@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">concentrationgame</string>
+    <string name="app_name">Concentration Game</string>
     <string name="single_player">Single Player</string>
     <string name="multiplayer">Multiplayer</string>
     <string name="highscores">High Scores</string>
@@ -25,4 +25,6 @@
     <string name="player_one_won">Player 1 has won the game!</string>
     <string name="player_two_won">Player 2 has won the game!</string>
     <string name="tie">It is a tie!</string>
+    <string name="game_will_start">Game will start in 5 seconds!</string>
+    <string name="title_activity_main2">Main2Activity</string>
 </resources>

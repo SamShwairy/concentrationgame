@@ -8,6 +8,7 @@ import com.tmc.concentrationgame.models.UserModel
 /**
  * Created by sammy on 2/17/2018.
  */
+//Asynctask to read from the dabase and then fire the interface
 class GetHighscores : AsyncTask<UserDao, Void, Array<UserModel>>() {
     private var highscoresInterface: HighscoresInterface? = null
 

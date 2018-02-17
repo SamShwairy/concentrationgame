@@ -61,6 +61,7 @@
             android:id="@+id/exitButton"
             android:text="@string/exit"
             android:padding="@dimen/unit_16"
+            android:layout_marginBottom="@dimen/unit_16_text"
             android:textSize="@dimen/unit_16_text"
             android:background="@color/colorPrimary"
             android:textColor="@color/white"

@@ -6,7 +6,7 @@ package com.tmc.concentrationgame.server
 
 object ApiUtils {
 
-        val BASE_URL = "https://api.flickr.com/services/rest/"
+    val BASE_URL = "https://api.flickr.com/services/rest/"
 
     val soService: RetrofitServices?
         get() = RetrofitClient.getClient(BASE_URL)?.create(RetrofitServices::class.java)

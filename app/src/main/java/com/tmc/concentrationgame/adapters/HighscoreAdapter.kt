@@ -14,7 +14,7 @@ import com.tmc.concentrationgame.models.UserModel
  */
 
 class HighscoreAdapter(private val users: Array<UserModel>?, private val context: Context) : RecyclerView.Adapter<HighscoreAdapter.ViewHolder>() {
-
+    //View Holder
     class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
 
         val name: TextView = v.findViewById<View>(R.id.name) as TextView
@@ -31,7 +31,7 @@ class HighscoreAdapter(private val users: Array<UserModel>?, private val context
 
         return HighscoreAdapter.ViewHolder(v)
     }
-
+    //First row is the header
     override fun onBindViewHolder(holder: HighscoreAdapter.ViewHolder, position: Int) {
         if (position == 0) {
             holder.userId.text = context.resources.getString(R.string.rank)
@@ -44,7 +44,7 @@ class HighscoreAdapter(private val users: Array<UserModel>?, private val context
         }
     }
 
-
+    //Adding one for the header
     override fun getItemCount(): Int {
         if (users != null) {
             return users.size + 1
