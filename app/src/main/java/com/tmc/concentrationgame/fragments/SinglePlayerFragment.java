@@ -51,6 +51,7 @@ public class SinglePlayerFragment extends Fragment implements OnToggledListener 
     private ProgressBar progressBar;
     private TextView timeTextView;
     private Runnable startGame;
+    private boolean isCompleted = false;
 
     private int numberOfImagesRequired;
     private int numOfCol;
@@ -125,7 +126,17 @@ public class SinglePlayerFragment extends Fragment implements OnToggledListener 
                     myViews.get(i).setCompleted();
                 }
             }
-            score++;
+            switch (level){
+                case EASY:
+                    score++;
+                    break;
+                case MEDIUM:
+                    score+=2;
+                    break;
+                case HARD:
+                    score+=3;
+                    break;
+            }
             scoreTextView.setText(getResources().getString(R.string.score) + String.valueOf(score));
             if (score == numberOfImagesRequired) {
                 showEndGameDialog();
@@ -146,6 +157,13 @@ public class SinglePlayerFragment extends Fragment implements OnToggledListener 
                 }
             }
         }, getContext().getResources().getInteger(R.integer.anim_length));
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        countDownTimer = startTimer(getResources().getInteger(R.integer.timer));
+
     }
 
     @Override
@@ -192,18 +210,19 @@ public class SinglePlayerFragment extends Fragment implements OnToggledListener 
         myViews = new ArrayList<>(numOfCol * numOfRow);
         for (int yPos = 0; yPos < numOfRow; yPos++) {
             for (int xPos = 0; xPos < numOfCol; xPos++) {
-                final MyView tView = new MyView(getActivity(), xPos, yPos, flickrPhotoWrapper.getPhoto().get((yPos * numOfCol) + xPos));
+                final MyView tView = new MyView(getActivity(), flickrPhotoWrapper.getPhoto().get((yPos * numOfCol) + xPos),handler);
                 tView.setOnToggledListener(this);
 
                 myViews.add(tView);
                 myGridLayout.addView(tView);
-                handler.postDelayed(tView.hideBackImage, getResources().getInteger(R.integer.anim_length_half));
+                handler.postDelayed(tView.getHideBackImage(), getResources().getInteger(R.integer.anim_length_half));
                 startGame = new Runnable() {
                     @Override
                     public void run() {
                         tView.flipCard();
-                        if (isAdded())
-                            startTimer(getResources().getInteger(R.integer.timer));
+                        if (isAdded()) {
+                            countDownTimer.start();
+                        }
                     }
                 };
                 handler.postDelayed(startGame, getResources().getInteger(R.integer.loading_time));
@@ -246,6 +265,7 @@ public class SinglePlayerFragment extends Fragment implements OnToggledListener 
     }
 
     private void showEndGameDialog() {
+        if(countDownTimer!=null)
         countDownTimer.cancel();
 
         if (getActivity() != null) {
@@ -255,7 +275,7 @@ public class SinglePlayerFragment extends Fragment implements OnToggledListener 
     }
 
 
-    private void startTimer(final int minuti) {
+    private CountDownTimer startTimer(final int minuti) {
         countDownTimer = new CountDownTimer(60 * minuti * 1000, 1000) {
 
             @Override
@@ -267,13 +287,17 @@ public class SinglePlayerFragment extends Fragment implements OnToggledListener 
 
             @Override
             public void onFinish() {
-                if (getActivity() != null)
-                    ((MainActivity) getActivity()).showPlayAgainDialog(false);
-                timeTextView.setText("");
+                if(!isCompleted) {
+                    if (getActivity() != null)
+                        ((MainActivity) getActivity()).showPlayAgainDialog(false);
+                    timeTextView.setText("");
+                    countDownTimer.cancel();
+                    isCompleted = true;
+                }
 
             }
-        }.start();
-
+        };
+        return countDownTimer;
     }
 
 

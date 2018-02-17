@@ -19,7 +19,7 @@ class PlayAgainDialog(context: Context, isWon: Boolean?, dialogPlayAgainInterfac
         builder.setMessage(title)
                 .setCancelable(false)
                 .setPositiveButton(context.resources.getString(R.string.yes)) { dialog, id -> dialogPlayAgainInterface.clickYes() }
-                .setNegativeButton(context.resources.getString(R.string.no)) { dialog, id -> dialog.cancel() }
+                .setNegativeButton(context.resources.getString(R.string.no)) { dialog, id -> dialogPlayAgainInterface.clickNo() }
         val alert = builder.create()
         alert.show()
     }

@@ -42,8 +42,7 @@ public class MultiplayerFragment extends Fragment implements OnToggledListener {
 
     private TextView firstPlayerScoreTextView;
     private TextView secondPlayerScoreTextView;
-    
- 
+
     
     private Boolean playerOneTurn = true;
     private Parameters.Levels level;
@@ -60,7 +59,6 @@ public class MultiplayerFragment extends Fragment implements OnToggledListener {
     private int numOfRow = 4;
     private int MARGIN = 4;
     private int gridWidth;
-    private int score = 0;
     private int firstPlayerScore = 0;
     private int secondPlayerScore = 0;
 
@@ -100,6 +98,7 @@ public class MultiplayerFragment extends Fragment implements OnToggledListener {
 
         return view;
     }
+
     @Override
     public void OnToggled(MyView v) {
 
@@ -127,16 +126,39 @@ public class MultiplayerFragment extends Fragment implements OnToggledListener {
                     myViews.get(i).setCompleted();
                 }
             }
+            int score = 0;
+            switch (level){
+                case EASY:
+                    score++;
+                    break;
+                case MEDIUM:
+                    score+=2;
+                    break;
+                case HARD:
+                    score+=3;
+                    break;
+            }
             if(playerOneTurn) {
-                firstPlayerScore++;
+                firstPlayerScore+=score;
                 firstPlayerScoreTextView.setText(getResources().getString(R.string.firstPlayerScore) + String.valueOf(firstPlayerScore));
 
             }else{
-                secondPlayerScore++;
+                secondPlayerScore+=score;
                 secondPlayerScoreTextView.setText(getResources().getString(R.string.secondPlayerScore) + String.valueOf(secondPlayerScore));
             }
             if (firstPlayerScore + secondPlayerScore == numberOfImagesRequired) {
-                showEndGameDialog();
+                if(firstPlayerScore>secondPlayerScore) {
+                    Toast.makeText(getActivity(), getResources().getString(R.string.player_one_won), Toast.LENGTH_SHORT).show();
+                    showEndGameDialog(true);
+                }
+                else if (firstPlayerScore<secondPlayerScore) {
+                    Toast.makeText(getActivity(), getResources().getString(R.string.player_two_won), Toast.LENGTH_SHORT).show();
+                    showEndGameDialog(false);
+                }
+                else if(firstPlayerScore==secondPlayerScore) {
+                    Toast.makeText(getActivity(), getResources().getString(R.string.tie),Toast.LENGTH_SHORT).show();
+                    ((MainActivity)getActivity()).showPlayAgainDialog(false);
+                }
             }
         }else {
 
@@ -216,12 +238,12 @@ public class MultiplayerFragment extends Fragment implements OnToggledListener {
         myViews = new ArrayList<>(numOfCol * numOfRow);
         for (int yPos = 0; yPos < numOfRow; yPos++) {
             for (int xPos = 0; xPos < numOfCol; xPos++) {
-                final MyView tView = new MyView(getActivity(), xPos, yPos, flickrPhotoWrapper.getPhoto().get((yPos * numOfCol) + xPos));
+                final MyView tView = new MyView(getActivity(), flickrPhotoWrapper.getPhoto().get((yPos * numOfCol) + xPos),handler);
                 tView.setOnToggledListener(this);
 
                 myViews.add(tView);
                 myGridLayout.addView(tView);
-                handler.postDelayed(tView.hideBackImage, getResources().getInteger(R.integer.anim_length_half));
+                handler.postDelayed(tView.getHideBackImage(), getResources().getInteger(R.integer.anim_length_half));
                 startGame = new Runnable() {
                     @Override
                     public void run() {
@@ -268,9 +290,12 @@ public class MultiplayerFragment extends Fragment implements OnToggledListener {
 
     }
 
-    private void showEndGameDialog() {
+    private void showEndGameDialog(boolean firstPlayerWon) {
         if (getActivity() != null) {
-            ((MainActivity) getActivity()).showNameDialog(score);
+            if (firstPlayerWon)
+            ((MainActivity) getActivity()).showNameDialog(firstPlayerScore);
+            else
+            ((MainActivity) getActivity()).showNameDialog(secondPlayerScore);
         }
     }
     @Override

@@ -14,10 +14,6 @@
     <string name="secondPlayerScore">Player #2: </string>
     <string name="player_one_turn">Player #1\'s turn</string>
     <string name="player_two_turn">Player #2\'s turn </string>
-    <string name="leaderboard">LeaderBoard</string>
-    <string name="player_one">Player 1</string>
-    <string name="player_two">Player 2</string>
-    <string name="difficulity_level">Difficulty Level</string>
     <string name="easy">Easy</string>
     <string name="medium">Medium</string>
     <string name="hard">Hard</string>
@@ -26,4 +22,7 @@
     <string name="no">No</string>
     <string name="rank">Rank</string>
     <string name="yes">Yes</string>
+    <string name="player_one_won">Player 1 has won the game!</string>
+    <string name="player_two_won">Player 2 has won the game!</string>
+    <string name="tie">It is a tie!</string>
 </resources>

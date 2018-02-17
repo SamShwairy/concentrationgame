@@ -6,4 +6,5 @@ package com.tmc.concentrationgame.interfaces
 
 interface DialogPlayAgainInterface {
     fun clickYes()
+    fun clickNo()
 }

@@ -35,8 +35,8 @@ class MainActivity : AppCompatActivity(), HighscoresInterface, DialogPlayAgainIn
         val fragmentManager = supportFragmentManager
         val fragment = HomeFragment()
         fragmentManager.beginTransaction()
-                .replace(R.id.content_layout, fragment, Parameters.HOME_FRAGMENT)
-                .commitAllowingStateLoss()
+                .add(R.id.content_layout, fragment, Parameters.HOME_FRAGMENT)
+                .commit()
     }
 
     fun goToSingleOrMultiplayerGame(levels: Parameters.Levels, isSinglePlayer: Boolean) {
@@ -84,8 +84,8 @@ class MainActivity : AppCompatActivity(), HighscoresInterface, DialogPlayAgainIn
             val builder = AlertDialog.Builder(this)
             builder.setMessage(resources.getString(R.string.are_you_sure_exit))
                     .setCancelable(false)
-                    .setPositiveButton(resources.getString(R.string.yes)) { dialog, id -> super@MainActivity.onBackPressed() }
-                    .setNegativeButton(resources.getString(R.string.no)) { dialog, id -> dialog.cancel() }
+                    .setPositiveButton(resources.getString(R.string.yes)) { _, _ -> super@MainActivity.onBackPressed() }
+                    .setNegativeButton(resources.getString(R.string.no)) { dialog, _ -> dialog.cancel() }
             val alert = builder.create()
             alert.show()
         } else {
@@ -101,7 +101,7 @@ class MainActivity : AppCompatActivity(), HighscoresInterface, DialogPlayAgainIn
 
 
         for (fragment in supportFragmentManager.fragments) {
-            supportFragmentManager.beginTransaction().remove(fragment).commit()
+            supportFragmentManager.popBackStack()
         }
     }
 
@@ -126,6 +126,9 @@ class MainActivity : AppCompatActivity(), HighscoresInterface, DialogPlayAgainIn
     override fun clickYes() {
         supportFragmentManager.popBackStack();
         level?.let { goToSingleOrMultiplayerGame(it, isSinglePlayer) }
+
+    }
+    override fun clickNo() {
 
     }
 
