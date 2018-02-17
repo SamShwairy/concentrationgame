@@ -9,7 +9,14 @@
     <string name="time_is_up">Time is Up! Would you like to play again? </string>
     <string name="you_win">You win! Would you like to play again? </string>
     <string name="enter_your_name">Game Over. Please enter your name</string>
-
+    <string name="save">Save</string>
+    <string name="firstPlayerScore">Player #1: </string>
+    <string name="secondPlayerScore">Player #2: </string>
+    <string name="player_one_turn">Player #1\'s turn</string>
+    <string name="player_two_turn">Player #2\'s turn </string>
+    <string name="leaderboard">LeaderBoard</string>
+    <string name="player_one">Player 1</string>
+    <string name="player_two">Player 2</string>
     <string name="difficulity_level">Difficulty Level</string>
     <string name="easy">Easy</string>
     <string name="medium">Medium</string>

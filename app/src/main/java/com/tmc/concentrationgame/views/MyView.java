@@ -12,6 +12,7 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 import com.tmc.concentrationgame.R;
+import com.tmc.concentrationgame.interfaces.OnToggledListener;
 import com.tmc.concentrationgame.models.FlickrPhoto;
 
 import java.io.File;
@@ -21,23 +22,17 @@ import java.io.File;
  */
 
 public class MyView extends FrameLayout implements View.OnClickListener {
-    private boolean touchEnabled = true;
     @Override
     public void onClick(View view) {
         if(myFlickrPhoto.getClickable()) {
             invalidate();
             animateItem();
             if (toggledListener != null) {
-                toggledListener.OnToggled(this, touchOn);
+                toggledListener.OnToggled(this);
             }
         }
     }
 
-    public interface OnToggledListener {
-        void OnToggled(MyView v, boolean touchOn);
-    }
-
-    boolean touchOn;
     private OnToggledListener toggledListener;
     private FlickrPhoto myFlickrPhoto;
     private ImageView belowImage;
@@ -71,7 +66,6 @@ public class MyView extends FrameLayout implements View.OnClickListener {
         directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
         LayoutInflater.from(context).inflate(R.layout.row_game, this, true);
 
-        touchOn = false;
         loadAnimations();
         init(flickrPhoto);
     }
@@ -107,7 +101,6 @@ public class MyView extends FrameLayout implements View.OnClickListener {
         }
 
     }
-
 
     private void animateItem(){
         flipCard();

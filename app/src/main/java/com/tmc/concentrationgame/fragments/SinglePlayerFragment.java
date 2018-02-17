@@ -1,14 +1,11 @@
 package com.tmc.concentrationgame.fragments;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +15,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.tmc.concentrationgame.R;
+import com.tmc.concentrationgame.activities.MainActivity;
+import com.tmc.concentrationgame.interfaces.OnToggledListener;
 import com.tmc.concentrationgame.methods.Methods;
 import com.tmc.concentrationgame.models.FlickrJsonResponse;
 import com.tmc.concentrationgame.models.FlickrPhotoWrapper;
@@ -26,6 +25,7 @@ import com.tmc.concentrationgame.server.RetrofitServices;
 import com.tmc.concentrationgame.utilities.Parameters;
 import com.tmc.concentrationgame.views.MyView;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
@@ -37,28 +37,31 @@ import rx.schedulers.Schedulers;
  * Created by sammy on 2/17/2018.
  */
 
-public class SinglePlayerFragment extends Fragment implements MyView.OnToggledListener {
+public class SinglePlayerFragment extends Fragment implements OnToggledListener {
 
     private Parameters.Levels level;
     private RetrofitServices mService;
-    private int numberOfImagesRequired;
     private Handler handler = new Handler();
     private GridLayout myGridLayout;
     private TextView scoreTextView;
-    private MyView[] myViews;
+    private ArrayList<MyView> myViews = new ArrayList<>();
     private String firstImageId, secondImageId;
-    private int score = 0;
     private FlickrPhotoWrapper flickrPhotoWrapper;
     private CountDownTimer countDownTimer;
     private ProgressBar progressBar;
     private TextView timeTextView;
     private Runnable startGame;
+
+    private int numberOfImagesRequired;
     private int numOfCol;
     private int numOfRow = 4;
     private int MARGIN = 4;
     private int gridWidth;
-    private ViewTreeObserver.OnGlobalLayoutListener onGlobalLayoutListener;
+    private int score = 0;
     private long seconds = 0;
+
+    private ViewTreeObserver.OnGlobalLayoutListener onGlobalLayoutListener;
+
     public SinglePlayerFragment() {
         // Required empty public constructor
     }
@@ -95,16 +98,15 @@ public class SinglePlayerFragment extends Fragment implements MyView.OnToggledLi
     }
 
     @Override
-    public void OnToggled(MyView v, boolean touchOn) {
+    public void OnToggled(MyView v) {
 
         //get the id string
         String idString = v.getImageId();
         if (!TextUtils.isEmpty(firstImageId)) {
-            for (int i = 0; i < myViews.length; i++) {
-                myViews[i].setTouchDisabled();
+            for (int i = 0; i < myViews.size(); i++) {
+                myViews.get(i).setTouchDisabled();
             }
             secondImageId = idString;
-            myGridLayout.setClickable(false);
             compare(firstImageId, secondImageId);
             firstImageId = "";
             secondImageId = "";
@@ -120,31 +122,30 @@ public class SinglePlayerFragment extends Fragment implements MyView.OnToggledLi
             for (int i = 0; i < flickrPhotoWrapper.getPhoto().size(); i++) {
                 if (flickrPhotoWrapper.getPhoto().get(i).getPhotoId().equals(firstImageId)) {
                     flickrPhotoWrapper.getPhoto().get(i).setCompleted(true);
-                    myViews[i].setCompleted();
+                    myViews.get(i).setCompleted();
                 }
             }
             score++;
             scoreTextView.setText(getResources().getString(R.string.score) + String.valueOf(score));
             if (score == numberOfImagesRequired) {
-                showEndGameDialog(true);
+                showEndGameDialog();
             }
         } else {
 
-            for (int i = 0; i < myViews.length; i++) {
-                myViews[i].closeOpenedImages();
-                myViews[i].setTouchDisabled();
+            for (int i = 0; i < myViews.size(); i++) {
+                myViews.get(i).closeOpenedImages();
+                myViews.get(i).setTouchDisabled();
 
             }
         }
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                for (int i = 0; i < myViews.length; i++) {
-                    myViews[i].setTouchEnabled();
+                for (int i = 0; i < myViews.size(); i++) {
+                    myViews.get(i).setTouchEnabled();
                 }
             }
-        }, 400);
-//        myGridLayout.setClickable(true);
+        }, getContext().getResources().getInteger(R.integer.anim_length));
     }
 
     @Override
@@ -161,13 +162,11 @@ public class SinglePlayerFragment extends Fragment implements MyView.OnToggledLi
                 .subscribe(new Subscriber<FlickrJsonResponse>() {
                     @Override
                     public void onCompleted() {
-                        Log.e("hi", "hi");
 
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.e("hi", "hi");
                     }
 
                     @Override
@@ -190,13 +189,13 @@ public class SinglePlayerFragment extends Fragment implements MyView.OnToggledLi
         numOfCol = flickrPhotoWrapper.getPhoto().size() / 4;
         myGridLayout.setColumnCount(numOfCol);
         myGridLayout.setRowCount(numOfRow);
-        myViews = new MyView[numOfCol * numOfRow];
+        myViews = new ArrayList<>(numOfCol * numOfRow);
         for (int yPos = 0; yPos < numOfRow; yPos++) {
             for (int xPos = 0; xPos < numOfCol; xPos++) {
                 final MyView tView = new MyView(getActivity(), xPos, yPos, flickrPhotoWrapper.getPhoto().get((yPos * numOfCol) + xPos));
                 tView.setOnToggledListener(this);
 
-                myViews[yPos * numOfCol + xPos] = tView;
+                myViews.add(tView);
                 myGridLayout.addView(tView);
                 handler.postDelayed(tView.hideBackImage, getResources().getInteger(R.integer.anim_length_half));
                 startGame = new Runnable() {
@@ -210,18 +209,16 @@ public class SinglePlayerFragment extends Fragment implements MyView.OnToggledLi
                 handler.postDelayed(startGame, getResources().getInteger(R.integer.loading_time));
             }
         }
-        onGlobalLayoutListener =  new ViewTreeObserver.OnGlobalLayoutListener() {
+        onGlobalLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
 
             @Override
             public void onGlobalLayout() {
-
-
                 int pWidth = myGridLayout.getWidth();
                 int pHeight = myGridLayout.getHeight();
 
                 if (level == Parameters.Levels.EASY) {
                     pWidth = gridWidth * 4 + 20;
-                }else if(level == Parameters.Levels.MEDIUM){
+                } else if (level == Parameters.Levels.MEDIUM) {
                     pWidth = gridWidth * 6 + 30;
                 }
 
@@ -232,11 +229,12 @@ public class SinglePlayerFragment extends Fragment implements MyView.OnToggledLi
                 for (int yPos = 0; yPos < numOfRow; yPos++) {
                     for (int xPos = 0; xPos < numOfCol; xPos++) {
                         GridLayout.LayoutParams params =
-                                (GridLayout.LayoutParams) myViews[yPos * numOfCol + xPos].getLayoutParams();
+                                (GridLayout.LayoutParams) myViews.get(yPos * numOfCol + xPos).getLayoutParams();
                         params.width = w - 2 * MARGIN;
                         params.height = h - 2 * MARGIN;
                         params.setMargins(MARGIN, MARGIN, MARGIN, MARGIN);
-                        myViews[yPos * numOfCol + xPos].setLayoutParams(params);
+                        if (myViews != null && !myViews.isEmpty())
+                            myViews.get(yPos * numOfCol + xPos).setLayoutParams(params);
                     }
                 }
 
@@ -247,78 +245,37 @@ public class SinglePlayerFragment extends Fragment implements MyView.OnToggledLi
 
     }
 
-    private void showEndGameDialog(boolean isWon) {
+    private void showEndGameDialog() {
         countDownTimer.cancel();
 
         if (getActivity() != null) {
-            String title = getResources().getString(R.string.time_is_up);
-            if (isWon) {
-
-                title = getResources().getString(R.string.you_win);
-            }
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setMessage(title)
-                    .setCancelable(false)
-                    .setPositiveButton(getResources().getString(R.string.yes), new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            startGameTask();
-                        }
-                    })
-                    .setNegativeButton(getResources().getString(R.string.no), new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.cancel();
-                        }
-                    });
-            AlertDialog alert = builder.create();
-            alert.show();
-
+            score += seconds;
+            ((MainActivity) getActivity()).showNameDialog(score);
         }
     }
 
-    private void startGameTask() {
-
-        score = 0;
-        firstImageId = "";
-        secondImageId = "";
-        myViews = new MyView[numOfCol * numOfRow];
-        mService = ApiUtils.INSTANCE.getSoService();
-        flickrPhotoWrapper = null;
-        myGridLayout.getViewTreeObserver().removeOnGlobalLayoutListener(onGlobalLayoutListener);
-        getPhotos();
-    }
 
     private void startTimer(final int minuti) {
         countDownTimer = new CountDownTimer(60 * minuti * 1000, 1000) {
-            // 500 means, onTick function will be called at every 500 milliseconds
 
             @Override
             public void onTick(long leftTimeInMilliseconds) {
                 seconds = leftTimeInMilliseconds / 1000;
                 progressBar.setProgress((int) seconds);
                 timeTextView.setText(String.format("%02d", seconds / 60) + ":" + String.format("%02d", seconds % 60));
-//                     format the textview to show the easily readable format
-
             }
 
             @Override
             public void onFinish() {
-                showEndGameDialog(false);
-                timeTextView.setText("STOP");
+                if (getActivity() != null)
+                    ((MainActivity) getActivity()).showPlayAgainDialog(false);
+                timeTextView.setText("");
 
             }
         }.start();
 
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        if (countDownTimer != null)
-            countDownTimer.cancel();
-        if (handler != null)
-            handler.removeCallbacks(startGame);
-    }
 
     @Override
     public void onDestroy() {
