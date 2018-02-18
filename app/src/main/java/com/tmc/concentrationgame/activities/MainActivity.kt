@@ -1,7 +1,5 @@
 package com.tmc.concentrationgame.activities
 
-import android.content.Context
-import android.content.ContextWrapper
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
@@ -16,7 +14,6 @@ import com.tmc.concentrationgame.fragments.*
 import com.tmc.concentrationgame.interfaces.DialogEnterNameInterface
 import com.tmc.concentrationgame.interfaces.DialogPlayAgainInterface
 import com.tmc.concentrationgame.interfaces.HighscoresInterface
-import com.tmc.concentrationgame.interfaces.ImageDownloadedInterface
 import com.tmc.concentrationgame.methods.GetHighscores
 import com.tmc.concentrationgame.methods.Methods
 import com.tmc.concentrationgame.models.FlickrJsonResponse
@@ -28,10 +25,9 @@ import com.tmc.concentrationgame.utilities.Parameters
 import rx.Subscriber
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
-import java.io.File
 
 
-class MainActivity : AppCompatActivity(), HighscoresInterface, DialogPlayAgainInterface, DialogEnterNameInterface, ImageDownloadedInterface {
+class MainActivity : AppCompatActivity(), HighscoresInterface, DialogPlayAgainInterface, DialogEnterNameInterface {
     //Database instance
     private var db: AppDatabase? = null
     //Difficulty level
@@ -89,7 +85,6 @@ class MainActivity : AppCompatActivity(), HighscoresInterface, DialogPlayAgainIn
     //Screen with the difficulties
     fun goToDifficultyFragment(singlePlayer: Boolean?) {
         //In case photos where not downloaded it will redownload.
-        getPhotos()
         val fragmentManager = supportFragmentManager
         val fragment = DifficultyFragment.newInstance(singlePlayer)
         fragmentManager.beginTransaction()
@@ -139,10 +134,7 @@ class MainActivity : AppCompatActivity(), HighscoresInterface, DialogPlayAgainIn
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        getPhotos()
-    }
+
     //Insertion into the database
     private fun insertHighScore(user: UserModel) {
         db!!.userDao().insertUser(user)
@@ -210,41 +202,24 @@ class MainActivity : AppCompatActivity(), HighscoresInterface, DialogPlayAgainIn
 
                     override fun onNext(flickrPhotoWrapper: FlickrJsonResponse) {
                         if (flickrPhotoWrapper.photos.photo().size >= Parameters.DEFAULT_NUMBER){
-                            Methods.downloadImages(applicationContext, flickrPhotoWrapper.photos.photo, Parameters.ImageSizes.q, Parameters.Levels.HARD, this@MainActivity)
                             getImages(flickrPhotoWrapper.photos)
-
                         }
-                        else getPhotos()
                     }
                 })
     }
 
     //Downloading te images
     private fun getImages(flickrPhotoWrapper: FlickrPhotoWrapper) {
-        Methods.downloadImages(this, flickrPhotoWrapper.photo, Parameters.ImageSizes.q, Parameters.Levels.HARD, this)
+        Methods.downloadImages(this, flickrPhotoWrapper.photo, Parameters.ImageSizes.q, Parameters.Levels.HARD)
         this.flickrPhotoWrapper = flickrPhotoWrapper
+        progressBar?.visibility = View.GONE
+        progressRelative?.visibility = View.GONE
     }
     //Interface fired
     override fun onTaskEndWithResult(userModels: Array<UserModel>) {
         goToHighScores(userModels)
     }
-    //Interface fired after each image is being downloaded(enabling the UI, after the right amount of images is placed on the phone)
-    override fun onComplete() {
-        val cw = ContextWrapper(this)
-        val directory = cw.getDir("imageDir", Context.MODE_PRIVATE)
-        flickrPhotoWrapper!!.photo.forEach { flickrPhoto ->
-            val myImageFile = File(directory, flickrPhoto.photoId +".jpg") // Create image file
-            if (myImageFile.exists()){
-                downloadedImages++
-            }
-        }
-        if (downloadedImages >= Parameters.DEFAULT_NUMBER){
-            runOnUiThread {
-                progressBar?.visibility = View.GONE
-                progressRelative?.visibility = View.GONE
-            }
-        }
-    }
+
 
 
 }

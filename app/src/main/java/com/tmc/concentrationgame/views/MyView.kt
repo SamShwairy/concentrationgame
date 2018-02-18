@@ -63,7 +63,7 @@ class MyView(@get:JvmName("getContext_") private val context: Context,  private 
         topImage = findViewById(R.id.top_image)
         topImage!!.setOnClickListener(this)
         val myImageFile = File(directory, flickrPhoto.photoId + ".jpg")
-        Picasso.with(context).load(myImageFile).into(belowImage)
+        Picasso.with(context).load(flickrPhoto.photoUrl).into(belowImage)
         flickrPhoto.clickable = true
         topImage!!.visibility = View.INVISIBLE
     }

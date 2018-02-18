@@ -88,7 +88,7 @@ class SinglePlayerFragment : Fragment(), OnToggledListener {
             secondImageId = idString
             compare(firstImageId, secondImageId!!)
             firstImageId = ""
-            secondImageId = ""
+            secondImageId = "_"
         } else {
             firstImageId = idString
         }
@@ -114,7 +114,6 @@ class SinglePlayerFragment : Fragment(), OnToggledListener {
             for (i in myViews!!.indices) {
                 myViews!![i].closeOpenedImages()
                 myViews!![i].setTouchDisabled()
-
             }
         }
         //Reenabling the touch

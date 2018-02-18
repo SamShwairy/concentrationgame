@@ -83,7 +83,7 @@ class MultiplayerFragment : Fragment(), OnToggledListener {
             secondImageId = idString
             compare(firstImageId, secondImageId!!)
             firstImageId = ""
-            secondImageId = ""
+            secondImageId = "_"
         } else {
             firstImageId = idString
         }
@@ -117,7 +117,7 @@ class MultiplayerFragment : Fragment(), OnToggledListener {
                     showEndGameDialog(false)
                 } else if (firstPlayerScore == secondPlayerScore) {
                     Toast.makeText(activity, resources.getString(R.string.tie), Toast.LENGTH_SHORT).show()
-                    (activity as MainActivity).showPlayAgainDialog(false)
+                    (activity as MainActivity).showPlayAgainDialog(true)
                 }
             }
         } else {
